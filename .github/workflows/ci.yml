@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - name: Syntax check
+        run: python -m py_compile src/lexer.py src/parser.py src/planner.py src/executor.py src/scanner.py src/cli.py
+      - name: Create test data and run query
+        run: |
+          mkdir -p data
+          echo "id,name,department,salary
+          1,Alice,Engineering,90000
+          2,Bob,Marketing,70000" > data/test.csv
+          python -m src.cli "SELECT * FROM data/test.csv"
