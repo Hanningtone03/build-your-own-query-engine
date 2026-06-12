@@ -1,16 +1,12 @@
+![CI](https://github.com/Hanningtone03/build-your-own-query-engine/actions/workflows/ci.yml/badge.svg)
+
 # Build Your Own Query Engine
 
-A query engine built from scratch in Python; execute SQL-like queries directly over CSV and JSON files.
+A query engine in Python; run SQL-like queries directly over CSV and JSON files.
 
 ## How it works
 
-Query engines like DuckDB and Apache Drill execute queries over raw files without loading them into a database first. This project implements that pipeline from scratch:
-
-- Tokenizes and parses SQL-like query strings
-- Scans CSV and JSON files into row collections
-- Builds a query execution plan from the parsed AST
-- Executes filtering, projection, sorting, grouping and aggregation
-- Prints results as a formatted table
+A SQL string goes through a lexer, parser, and planner into an execution plan. The executor runs each step — scan, filter, project, sort, group, limit; over the file data. No database needed.
 
 ## Project structure
 
@@ -38,9 +34,8 @@ python -m src.cli "SELECT * FROM data/file.csv"
 | Filter | `SELECT * FROM data/employees.csv WHERE department = 'Engineering'` |
 | Sort | `SELECT * FROM data/employees.csv ORDER BY salary DESC` |
 | Limit | `SELECT * FROM data/employees.csv LIMIT 3` |
-| Aggregates | `SELECT COUNT(id) FROM data/employees.csv GROUP BY department` |
+| Group | `SELECT COUNT(id) FROM data/employees.csv GROUP BY department` |
 | Distinct | `SELECT DISTINCT department FROM data/employees.csv` |
-| Aliases | `SELECT name AS employee FROM data/employees.csv` |
 
 ## Tech
 
